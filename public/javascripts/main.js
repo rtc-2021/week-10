@@ -83,10 +83,23 @@ function resetAndRetryConnection(peer) {
   }
 }
 
+/* Data Channels */
+
+function addFeaturesChannel(peer) {
+  const fc = peer.connection.createDataChannel('features',
+    { negotiated: true, id: 50 });
+  fc.onopen = function() {
+    console.log('Features channel has opened.');
+  };
+  fc.onmessage = function() {
+
+  };
+}
+
 /* WebRTC Events */
 
 function establishCallFeatures(peer) {
-
+  addFeaturesChannel(peer);
 }
 
 function registerRtcEvents(peer) {
