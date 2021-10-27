@@ -89,10 +89,13 @@ function addFeaturesChannel(peer) {
   const fc = peer.connection.createDataChannel('features',
     { negotiated: true, id: 50 });
   fc.onopen = function() {
-    console.log('Features channel has opened.');
+    $self.features = {
+      binaryType: fc.binaryType
+    }
+    fc.send(JSON.stringify($self.features))
   };
-  fc.onmessage = function() {
-
+  fc.onmessage = function({data}) {
+    peer.features = JSON.parse(data);
   };
 }
 
