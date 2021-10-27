@@ -60,14 +60,6 @@ function handleFilesForm(event) {
   const fileInput = form.querySelector('#files-input');
   const file = fileInput.files[0];
   console.log('Got a file with the name', file.name);
-  const img = document.createElement('img');
-  const imgSrc = URL.createObjectURL(file);
-  const filesReceived = document.querySelector('#files-received');
-  img.src = imgSrc;
-  filesReceived.appendChild(img);
-  img.onload = function() {
-    URL.revokeObjectURL(imgSrc);
-  };
 }
 
 
@@ -119,6 +111,19 @@ function addFeaturesChannel(peer) {
   fc.onmessage = function({data}) {
     peer.features = JSON.parse(data);
   };
+}
+
+function receiveFile() {
+  /*
+  const img = document.createElement('img');
+  const imgSrc = URL.createObjectURL(file);
+  const filesReceived = document.querySelector('#files-received');
+  img.src = imgSrc;
+  filesReceived.appendChild(img);
+  img.onload = function() {
+    URL.revokeObjectURL(imgSrc);
+  };
+  */
 }
 
 /* WebRTC Events */
