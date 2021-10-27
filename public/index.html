@@ -11,6 +11,19 @@
     <h1>Welcome</h1>
     <button type="button" class="join" id="call-button">Join</button>
   </header>
+  <main id="app">
+    <article id="files-sent">
+      <h2>Send a File</h2>
+      <form id="files-form" action="#null">
+        <label for="files-input">Choose a File</label>
+        <input type="file" id="files-input" name="files-input" />
+        <button type="submit">Send File</button>
+      </form>
+    </article>
+    <article id="files-received">
+      <ul id="files-manifest"></ul>
+    </article>
+  </main>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
