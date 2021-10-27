@@ -28,7 +28,12 @@ registerScEvents();
 const button = document
   .querySelector('#call-button');
 
+const filesForm = document
+  .querySelector('#files-form');
+
 button.addEventListener('click', handleButton);
+
+filesForm.addEventListener('submit', handleFilesForm);
 
 document.querySelector('#header h1')
   .innerText = `Welcome to Text Chat #${namespace}`;
@@ -48,6 +53,23 @@ function handleButton(e) {
     leaveCall();
   }
 }
+
+function handleFilesForm(event) {
+  event.preventDefault();
+  const form = event.target;
+  const fileInput = form.querySelector('#files-input');
+  const file = fileInput.files[0];
+  console.log('Got a file with the name', file.name);
+  const img = document.createElement('img');
+  const imgSrc = URL.createObjectURL(file);
+  const filesReceived = document.querySelector('#files-received');
+  img.src = imgSrc;
+  filesReceived.appendChild(img);
+  img.onload = function() {
+    URL.revokeObjectURL(imgSrc);
+  };
+}
+
 
 function joinCall() {
   sc.open();
