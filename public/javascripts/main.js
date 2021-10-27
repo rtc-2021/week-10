@@ -60,6 +60,7 @@ function handleFilesForm(event) {
   const fileInput = form.querySelector('#files-input');
   const file = fileInput.files[0];
   console.log('Got a file with the name', file.name);
+  sendFile($peer, file);
 }
 
 
@@ -111,6 +112,27 @@ function addFeaturesChannel(peer) {
   fc.onmessage = function({data}) {
     peer.features = JSON.parse(data);
   };
+}
+
+function sendFile(peer, file) {
+  // create a package of file metadata
+  const metadata = {
+    name: file.name,
+    size: file.size,
+    type: file.type
+  }
+  // console.log(JSON.stringify(metadata));
+  // create an asymmetric data channel
+  const fdc = peer.connection
+    .createDataChannel(`file-${metadata.name}`);
+  fdc.onopen = function() {
+    // send the metadata and file data,
+    // once the data channel has opened
+
+  };
+  fdc.onmessage = function() {
+    // handle an acknowledgement from the receiving peer
+  }
 }
 
 function receiveFile() {
