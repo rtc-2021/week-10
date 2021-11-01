@@ -120,11 +120,13 @@ function sendFile(peer, file) {
     name: file.name,
     size: file.size,
     type: file.type
-  }
+  };
+  const chunk = 8 * 1024; // 8KiB (kibibyte)
   // console.log(JSON.stringify(metadata));
   // create an asymmetric data channel
   const fdc = peer.connection
     .createDataChannel(`file-${metadata.name}`);
+
 
   if (
     !$peer.features ||
@@ -136,7 +138,10 @@ function sendFile(peer, file) {
 
 
   fdc.onopen = function() {
-    // send the metadata and file data,
+    // send the metadata
+    console.log('Created a data channel with ID', fdc.id);
+    console.log('Heard datachannel open event.')
+    fdc.send(JSON.stringify(metadata));
     // once the data channel has opened
 
   };
