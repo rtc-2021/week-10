@@ -125,6 +125,16 @@ function sendFile(peer, file) {
   // create an asymmetric data channel
   const fdc = peer.connection
     .createDataChannel(`file-${metadata.name}`);
+
+  if (
+    !$peer.features ||
+    ($self.features.binaryType !== $peer.features.binaryType)
+  ) {
+    fdc.binaryType = 'arraybuffer';
+  }
+  console.log(`Lets use the ${fdc.binaryType} data type!`);
+
+
   fdc.onopen = function() {
     // send the metadata and file data,
     // once the data channel has opened
