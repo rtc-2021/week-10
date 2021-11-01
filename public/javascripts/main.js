@@ -143,14 +143,27 @@ function sendFile(peer, file) {
     console.log('Heard datachannel open event.')
     fdc.send(JSON.stringify(metadata));
     // once the data channel has opened
-
   };
   fdc.onmessage = function() {
     // handle an acknowledgement from the receiving peer
   }
 }
 
-function receiveFile() {
+function receiveFile(fdc) {
+  const chunks = [];
+  let receivedBytes = 0;
+  let metadata;
+
+  fdc.onmessage = function({ data }) {
+    let message = data;
+    if (typeof(message) === 'string' &&
+      message.startsWith('{')) {
+      metadata = JSON.parse(message);
+      console.log(`Received metadata: ${message}`);
+    }
+  };
+
+
   /*
   const img = document.createElement('img');
   const imgSrc = URL.createObjectURL(file);
@@ -209,6 +222,9 @@ function handleRtcDataChannel({ channel }) {
   const dc = channel;
   console.log('Heard channel', dc.label,
     'with ID', dc.id);
+  if (dc.label.startsWith('file-')) {
+    receiveFile(channel);
+  }
 }
 
 /* Signaling Channel Events */
