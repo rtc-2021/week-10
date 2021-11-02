@@ -170,6 +170,17 @@ function receiveFile(fdc) {
       message.startsWith('{')) {
       metadata = JSON.parse(message);
       console.log(`Received metadata: ${message}`);
+    } else {
+      console.log('Received file data');
+      chunks.push(data);
+      receivedBytes += data.size ? data.size : data.byteLength;
+      console.log('Received bytes so far', receivedBytes);
+    }
+    // see if we've received all data
+
+    if (receivedBytes === metadata.size) {
+      console.log('File transfer complete');
+      // TODO: actually handle the complete received data
     }
   };
 
