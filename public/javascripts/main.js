@@ -137,12 +137,22 @@ function sendFile(peer, file) {
   console.log(`Lets use the ${fdc.binaryType} data type!`);
 
 
-  fdc.onopen = function() {
-    // send the metadata
+  fdc.onopen = async function() {
+    // send the metadata, once the data channel opens
     console.log('Created a data channel with ID', fdc.id);
     console.log('Heard datachannel open event.')
+    console.log('Use chunk size', chunk);
     fdc.send(JSON.stringify(metadata));
-    // once the data channel has opened
+
+    // send the actual file data
+    let data =
+      fdc.binaryType === 'blob' ? file : await file.arrayBuffer();
+
+    for (let i = 0; i < metadata.size; i += chunk) {
+      console.log('Attempting to send a chunk of data...');
+      fdc.send(data.slice(i, i + chunk));
+    }
+
   };
   fdc.onmessage = function() {
     // handle an acknowledgement from the receiving peer
