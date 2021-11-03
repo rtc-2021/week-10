@@ -154,8 +154,12 @@ function sendFile(peer, file) {
     }
 
   };
-  fdc.onmessage = function() {
+  fdc.onmessage = function({ data }) {
     // handle an acknowledgement from the receiving peer
+    let message = JSON.parse(data);
+    console.log('Successfully sent file', message.name);
+    console.log('Closing the data channel');
+    fdc.close();
   }
 }
 
@@ -180,6 +184,11 @@ function receiveFile(fdc) {
 
     if (receivedBytes === metadata.size) {
       console.log('File transfer complete');
+      // Notify sender that file has been received
+      const confirmation = {
+        name: metadata.name
+      };
+      fdc.send(JSON.stringify(confirmation));
       // TODO: actually handle the complete received data
       const received_file = new Blob(chunks, { type: metadata.type });
       // For handling images:
