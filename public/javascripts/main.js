@@ -210,6 +210,9 @@ function receiveFile(fdc) {
         }, 1000);
       };
 
+      // Automatically download the file!
+      a.click();
+
     }
   };
 
