@@ -23,6 +23,10 @@ html {
 #header h1 {
   flex: 1 1 auto;
 }
+img {
+  display: block;
+  max-width: 100%;
+}
 .access {
   position: absolute;
   left: -10000px;

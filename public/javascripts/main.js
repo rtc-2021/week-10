@@ -181,6 +181,17 @@ function receiveFile(fdc) {
     if (receivedBytes === metadata.size) {
       console.log('File transfer complete');
       // TODO: actually handle the complete received data
+      const received_file = new Blob(chunks, { type: metadata.type });
+      // For handling images:
+      const img = document.createElement('img');
+      const imgSrc = URL.createObjectURL(received_file);
+      const filesReceived = document.querySelector('#files-received');
+      img.src = imgSrc;
+      filesReceived.appendChild(img);
+      img.onload = function() {
+        URL.revokeObjectURL(imgSrc);
+      };
+
     }
   };
 
