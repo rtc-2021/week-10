@@ -183,13 +183,22 @@ function receiveFile(fdc) {
       // TODO: actually handle the complete received data
       const received_file = new Blob(chunks, { type: metadata.type });
       // For handling images:
-      const img = document.createElement('img');
-      const imgSrc = URL.createObjectURL(received_file);
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      const download = URL.createObjectURL(received_file);
       const filesReceived = document.querySelector('#files-received');
-      img.src = imgSrc;
-      filesReceived.appendChild(img);
-      img.onload = function() {
-        URL.revokeObjectURL(imgSrc);
+      a.href = download;
+      a.download = metadata.name;
+      a.innerText = metadata.name;
+      li.appendChild(a);
+      filesReceived.appendChild(li);
+      a.onclick = function() {
+        setTimeout(function() {
+          // Wait one second after the click to revoke
+          // the object URL
+          console.log('Revoking object URL...');
+          URL.revokeObjectURL(download)
+        }, 1000);
       };
 
     }
